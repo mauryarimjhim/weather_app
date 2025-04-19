@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WEATHER</title>
+    <link rel="stylesheet" href="weather_css.css">
+</head>
+
+<body>
+    <div class="card">
+        <div class="search">
+            <input type="text" placeholder="enter city name" spellcheck="false">
+            <button><img src="search.jpg"></button>
+        </div>
+        <div class="weather">
+            <img src="rain.jpg" class="weather-icon">
+            <h1 class="temp">22°C</h1>
+            <h2 class="city">New York</h2>
+            <div class="details">
+                <div class="col">
+                    <img src="humidity2.png">
+                    <div>
+                        <p class="humidtiy">50%</p>
+                        <p>Humidity</p>
+                    </div>
+                </div>
+                <div class="col">
+                    <img src="wind2.png">
+                    <div>
+                        <p class="wind">20km/h</p>
+                        <p>Wind Speed</p>
+                    </div>
+                </div>
+            </div>
+            <div class="maxi">
+                <img src="sunny2.png">
+                <div>
+                    <p class="max-temp">20°C</p>
+                    <p>Maximum Temperature</p>
+                </div>
+
+                <img src="sunny2.png">
+                <div>
+                    <p class="min-temp">20°C</p>
+                    <p>Minimum Temperature</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        const apikey = "8744b7f02a6b6ed077cb176b7306ea37";
+        const apiUrl = "https://api.openweathermap.org/data/2.5/weather?&units=metric&q=";
+
+        const searchbox = document.querySelector(".search input");
+        const searchbtn = document.querySelector(".search button");
+        const weatherIcon = document.querySelector(".weather-icon");
+
+        async function checkweather(city)
+         {
+            const response = await fetch(apiUrl + city + `&appid=${apikey}`);
+
+
+                var data = await response.json();
+
+                console.log(data);
+                document.querySelector(".city").innerHTML = data.name;
+                document.querySelector(".temp").innerHTML = Math.round(data.main.temp) + "°C";
+                document.querySelector(".wind").innerHTML = data.wind.speed + "km/h";
+                document.querySelector(".min-temp").innerHTML = Math.round(data.main.temp_min) + "°C";
+                document.querySelector(".max-temp").innerHTML = Math.round(data.main.temp_max) + "°C";
+                if (data.weather[0].main == "Clouds") {
+                    weatherIcon.src = "cclouds.png";
+                }
+                else if (data.weather[0].main == "Clear") {
+                    weatherIcon.src = "cclouds.png";
+                }
+                else if (data.weather[0].main == "Rain") {
+                    weatherIcon.src = "rain.jpg";
+                }
+                else if (data.weather[0].main == "Drizzle") {
+                    weatherIcon.src = "rain.jpg";
+                }
+                else if (data.weather[0].main == "Mist") {
+                    weatherIcon.src = "mist.jpg";
+                }
+                else
+                    weatherIcon.src = "default.png";
+                document.querySelector(".weather").style.display = "block";
+
+            
+           
+        }
+        searchbtn.addEventListener("click", () => {
+                checkweather(searchbox.value);//to get the data entered in input and it will pass the city name in checweather function and it will fetch data through the api
+            })
+        
+    </script>
+
+</body>
+
+</html>
